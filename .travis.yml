@@ -14,8 +14,7 @@ before_install:
   - CIAODIR=$TRAVIS_BUILD_DIR; CIAOTGZ=CiaoDE-latest.tar.gz; wget http://ciao-lang.org/packages/master/$CIAOTGZ; mkdir $CIAODIR; tar --directory "$CIAODIR" --strip-components=1 -xvzf "$TRAVIS_BUILD_DIR/$CIAOTGZ"
 
 before_script:
-  - mkdir -p $TRAVIS_BUILD_DIR/build
-  - cd $CIAODIR; ./ciaosetup configure --prefix=$TRAVIS_BUILD_DIR/build --instype=src --sysavail=user
+  - cd $CIAODIR; ./ciaosetup configure --instype=local
 
 script:
   - cd $CIAODIR; ./ciaosetup build
