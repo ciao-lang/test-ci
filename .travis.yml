@@ -23,6 +23,8 @@ before_script:
 script:
   - cd $CIAODIR; ./ciaosetup build
   - cd $CIAODIR; ./ciaosetup install
+  - cd $TRAVIS_BUILD_DIR
+  - . $CIAODIR/ciao/etc/DOTprofile
   - ciaoc hw.pl
   - ./hw
 
