@@ -12,7 +12,6 @@ before_install:
   - echo "install dependencies"
 
 before_script:
-  - travis_retry bundle
   - if [ $TRAVIS_OS_NAME == linux ]; then echo "run configure"; fi
   - if [ $TRAVIS_OS_NAME == osx ]; then echo "run configure"; fi
 
