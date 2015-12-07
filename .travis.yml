@@ -15,14 +15,14 @@ before_install:
   - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install emacs build-essential texlive texinfo imagemagick gcc-multilib libc6-i386 libc6-dev-i386 g++-multilib; fi
   - echo "using default emacs" # if [ $TRAVIS_OS_NAME == osx ]; then brew tap railwaycat/emacsmacport; brew install emacs-mac; fi
   - if [ $TRAVIS_OS_NAME == osx ]; then brew tap railwaycat/emacsmacport; brew install imagemagick; fi
-  - CIAODIR=$TRAVIS_BUILD_DIR; CIAOTGZ=CiaoDE-latest.tar.gz; wget http://ciao-lang.org/packages/master/$CIAOTGZ; mkdir $CIAODIR; tar --directory "$CIAODIR" --strip-components=1 -xvzf "$TRAVIS_BUILD_DIR/$CIAOTGZ"
+  - CIAODIR=$TRAVIS_BUILD_DIR/ciao; git clone https://github.com/ciao-lang/ciao.git
 
 before_script:
-  - cd $CIAODIR; ./ciaosetup configure --instype=local --cc=$CC
+  - cd $CIAODIR; ./ciao-boot.sh configure --instype=local --core:custom_cc=$CC
 
 script:
-  - cd $CIAODIR; ./ciaosetup build
-  - cd $CIAODIR; ./ciaosetup install
+  - cd $CIAODIR; ./ciao-boot.sh build
+  - cd $CIAODIR; ./ciao-boot.sh install
   - cd $TRAVIS_BUILD_DIR
   - . $CIAODIR/ciao/etc/DOTprofile
   - ciaoc hw.pl
