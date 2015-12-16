@@ -23,7 +23,7 @@ before_install:
   - CIAODIR=$TRAVIS_BUILD_DIR/ciao; git clone https://github.com/ciao-lang/ciao.git
 
 before_script:
-  - cd $CIAODIR; ./ciao-boot.sh configure --instype=local --core:custom_cc=$CC $EXTRAOPTS
+  - cd $CIAODIR; ./ciao-boot.sh configure --instype=local $ARCHOPTS --core:custom_cc=$CC $EXTRAOPTS
 
 script:
   - cd $CIAODIR; ./ciao-boot.sh build
@@ -44,7 +44,8 @@ notifications:
   email: false
 
 env:
-  - LANG="en_US.UTF-8"
+  - LANG="en_US.UTF-8" ARCHOPTS=
+  - LANG="en_US.UTF-8" ARCHOPTS="--core:m32=yes"
 
 os:
   - linux
