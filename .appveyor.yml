@@ -21,4 +21,5 @@ environment:
       MSYSTEM: MINGW32
 
 build_script:
-  - C:\%MSYS2_DIR%\usr\bin\bash -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; cat hw.pl"
+  - git clone -q --branch=master https://github.com/ciao-lang/ciao.git
+  - C:\%MSYS2_DIR%\usr\bin\bash -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; cd ciao; ./ciao-boot.sh local-install"
