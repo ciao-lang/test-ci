@@ -15,12 +15,12 @@ environment:
       MSYS2_ARCH: x86_64
       MSYS2_DIR: msys64
       MSYSTEM: MINGW64
-      CIAO_OPTS: --core:with_emacs_mode=no --core:update_dotemacs=no
+      CIAO_OPTS: --core:with_emacs_mode=no --core:update_dotemacs=no --with-docs=no
     - compiler: msys2
       MSYS2_ARCH: i686
       MSYS2_DIR: msys64
       MSYSTEM: MINGW32
-      CIAO_OPTS: --core:m32=yes --core:with_emacs_mode=no --core:update_dotemacs=no
+      CIAO_OPTS: --core:m32=yes --core:with_emacs_mode=no --core:update_dotemacs=no --with-docs=no
 
 build_script:
   - git clone -q --branch=master https://github.com/ciao-lang/ciao.git
