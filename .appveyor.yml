@@ -15,15 +15,13 @@ environment:
       MSYS2_ARCH: x86_64
       MSYS2_DIR: msys64
       MSYSTEM: MINGW64
-      CIAODIR: ciao64
       ARCHOPTS:
     - compiler: msys2
       MSYS2_ARCH: i686
       MSYS2_DIR: msys64
       MSYSTEM: MINGW32
-      CIAODIR: ciao32
       ARCHOPTS: --core:m32=yes
 
 build_script:
-  - git clone -q --branch=master https://github.com/ciao-lang/ciao.git %CIAODIR%
-  - C:\%MSYS2_DIR%\usr\bin\bash -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; cd $CIAODIR; ./ciao-boot.sh local-install $ARCHOPTS"
+  - git clone -q --branch=master https://github.com/ciao-lang/ciao.git
+  - C:\%MSYS2_DIR%\usr\bin\bash -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; cd ciao; ./ciao-boot.sh local-install $ARCHOPTS"
