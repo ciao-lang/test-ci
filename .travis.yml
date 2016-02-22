@@ -1,52 +1,52 @@
 language: cpp
-
 compiler:
-  - gcc
-  - clang
-
+- gcc
+- clang
 before_install:
-  - echo $LANG
-  - echo $LC_ALL
-  - if [ $TRAVIS_OS_NAME == osx ]; then brew update; fi
-  - if [ $TRAVIS_OS_NAME == linux ]; then sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
-  - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get update; fi
-  - if [ $CC == clang ] && [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install -y llvm-3.4 llvm-3.4-dev; fi
-  - if [ $CC == gcc ] && [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install -y gcc-4.8 g++-4.8; fi
-  - if [ $CC == clang ] && [ $TRAVIS_OS_NAME == osx ]; then brew update && brew install llvm35 && brew link --force llvm35; fi
-  - if [ $TRAVIS_OS_NAME == linux ] && [ $CC = gcc ]; then export CC=gcc-4.8; export CXX=g++-4.8; fi # otherwise gcc points to old gcc
-  - if [ $TRAVIS_OS_NAME == osx ] && [ $CC = gcc ]; then export CC=gcc-4.8; export CXX=g++-4.8; fi # otherwise gcc points to clang
-  - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install emacs build-essential gcc-4.8-multilib libc6-i386 libc6-dev-i386 g++-4.8-multilib; fi
-  - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install emacs texlive texinfo imagemagick; fi
-  - echo "using default emacs" # if [ $TRAVIS_OS_NAME == osx ]; then brew tap railwaycat/emacsmacport; brew install emacs-mac; fi
-  - if [ $TRAVIS_OS_NAME == osx ]; then brew tap railwaycat/emacsmacport; brew install imagemagick; fi
-  - EXTRAOPTS=""; if [ $TRAVIS_OS_NAME == osx ]; then EXTRAOPTS="--with-docs=no"; fi
-  - CIAODIR=$TRAVIS_BUILD_DIR/ciao; git clone https://github.com/ciao-lang/ciao.git
-
+- echo $LANG
+- echo $LC_ALL
+- if [ $TRAVIS_OS_NAME == osx ]; then brew update; fi
+- if [ $TRAVIS_OS_NAME == linux ]; then sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
+- if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get update; fi
+- if [ $CC == clang ] && [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install -y llvm-3.4 llvm-3.4-dev; fi
+- if [ $CC == gcc ] && [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install -y gcc-4.8 g++-4.8; fi
+- if [ $CC == clang ] && [ $TRAVIS_OS_NAME == osx ]; then brew update && brew install llvm35 && brew link --force llvm35; fi
+- if [ $TRAVIS_OS_NAME == linux ] && [ $CC = gcc ]; then export CC=gcc-4.8; export CXX=g++-4.8; fi
+- if [ $TRAVIS_OS_NAME == osx ] && [ $CC = gcc ]; then export CC=gcc-4.8; export CXX=g++-4.8; fi
+- if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install emacs build-essential gcc-4.8-multilib libc6-i386 libc6-dev-i386 g++-4.8-multilib; fi
+- if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install emacs texlive texinfo imagemagick; fi
+- echo "using default emacs"
+- if [ $TRAVIS_OS_NAME == osx ]; then brew tap railwaycat/emacsmacport; brew install imagemagick; fi
+- EXTRAOPTS=""; if [ $TRAVIS_OS_NAME == osx ]; then EXTRAOPTS="--with-docs=no"; fi
+- CIAODIR=$TRAVIS_BUILD_DIR/ciao; git clone https://github.com/ciao-lang/ciao.git
 before_script:
-  - cd $CIAODIR; ./ciao-boot.sh configure --instype=local $ARCHOPTS --core:custom_cc=$CC $EXTRAOPTS
-
+- cd $CIAODIR; ./ciao-boot.sh configure --instype=local $ARCHOPTS --core:custom_cc=$CC $EXTRAOPTS
 script:
-  - cd $CIAODIR; ./ciao-boot.sh build
-  - cd $CIAODIR; ./ciao-boot.sh install
-  - cd $TRAVIS_BUILD_DIR
-  - . $CIAODIR/core/etc/DOTprofile
-  - ciaoc hw.pl
-  - ./hw
-
+- cd $CIAODIR; # ./ciao-boot.sh build
+- cd $CIAODIR; # ./ciao-boot.sh install
+- cd $TRAVIS_BUILD_DIR
+- true # . $CIAODIR/core/etc/DOTprofile
+- true # ciaoc hw.pl
+- true # ./hw
+- mkdir $CIAODIR/build/pbundle; cp hw.pl $CIAODIR/build/pbundle/ciao-latest.tar.gz
 after_success:
-  - if [ $TRAVIS_BRANCH == $TRAVIS_TAG ]; then echo "missing deploy"; fi
-
+- if [ $TRAVIS_BRANCH == $TRAVIS_TAG ]; then echo "missing deploy"; fi
+deploy:
+  provider: bintray
+  file: bintray-descriptor.json
+  user: jfmc
+  key:
+    secure: caotJ7W50JaAbfySP7CdWrrq/b2x8OzcHhG0u8My6I3wWf0t+jKLP0OvuVp/WJUWYd9+aviE24ln4HFA1Pj6+GIrModBy0AlyOsGpsEqPCKB9pYYOBO+Xefm1Xhs+iAzr1zP7UnFp/z4txvn+22cq/Sr6ZTKUk1E71oZWdqGi+cGefbSOZ9y+kX7OyoTxmsDGA9oXJnSxZMStChdIb40n4tZLWiheTjfGWdM4xYdIbUmR9J1ZTsF8HDoXS3ltbxjXOG7MkPeld8tOjjr24Gc6ECjBVnJ0RV19qxDNxWuFYOpKLog7bWCXQzm+2WahYhzMjmNmwVXFkSkCRomlVe9IGZG03H/hTf4NcakzuvWIjhtqeNPSBWtOI05lLDTgKuh5bvXhlzUfEFLIyY8Dwt59dHSaXkpuHOb6LBWnPXPQ1DYSCwUOrtMr4o7LaimAAbvOBpZ1K0O/5Rn/Y5c1dKOgNxKtmkS2hqubGQuT9r1sT4UGRJAjH6I+trJq6OeMA0YTta5SAC2FW2XW1nWSjaWBNiMGxpr/2B4WMvVJaWUGi4OLzhfkR7XJz6wQte/JqRUnsiXOwxQa7/Iji5WqGn1pIrVulJKyPZJGqvaiJi1n3N8mBsLMXWqFTiFz8/JUl7uSbh2vFeDVELNAn+dB0LxoyAG1nH3ZJEzcb+lJO3BWiQ=
+  on:
+    condition: ( $TRAVIS_OS_NAME = osx && $CC = clang ) || ( $TRAVIS_OS_NAME = linux && $CC = gcc )
 branches:
   only:
-    - master
-
+  - master
 notifications:
   email: false
-
 env:
-  - LANG="en_US.UTF-8" ARCHOPTS=
-  - LANG="en_US.UTF-8" ARCHOPTS="--core:m32=yes"
-
+- LANG="en_US.UTF-8" ARCHOPTS=
+- LANG="en_US.UTF-8" ARCHOPTS="--core:m32=yes"
 os:
-  - linux
-  - osx
+- linux
+- osx
