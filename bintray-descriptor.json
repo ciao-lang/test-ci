@@ -57,7 +57,7 @@
 
   "files":
   [
-    {"includePattern": "ciao/build/pbundle/*.tar.gz"}
+    {"includePattern": "ciao/build/pbundle/.*\.tar\.gz"}
 //    {"includePattern": "build/bin(.*)*/(.*\.gem)", "excludePattern": ".*/do-not-deploy/.*", "uploadPattern": "gems/$2"},
 //    {"includePattern": "build/docs/(.*)", "uploadPattern": "docs/$1"}
   ],
