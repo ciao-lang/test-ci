@@ -22,15 +22,17 @@ before_install:
 before_script:
 - cd $CIAODIR; ./ciao-boot.sh configure --instype=local $ARCHOPTS --core:custom_cc=$CC $EXTRAOPTS
 script:
-- cd $CIAODIR; # ./ciao-boot.sh build
-- cd $CIAODIR; # ./ciao-boot.sh install
-- cd $TRAVIS_BUILD_DIR
+- cd $CIAODIR; ./ciao-boot.sh build
+- cd $CIAODIR; ./ciao-boot.sh install
+- true # cd $TRAVIS_BUILD_DIR
 - true # . $CIAODIR/core/etc/DOTprofile
 - true # ciaoc hw.pl
 - true # ./hw
-- mkdir $CIAODIR/build/pbundle; cp hw.pl $CIAODIR/build/pbundle/ciao-latest.tar.gz
+- cd $CIAODIR; ./ciao-boot.sh gen_pbundle__bin_tgz
+- cd $CIAODIR/build/pbundle
+- LATEST=`echo Ciao-*.tar.gz | sed 's/Ciao-.*-bin/ciao-latest/'`; mv Ciao-*.tar.gz $LATEST
 after_success:
-- if [[ (($TRAVIS_OS_NAME = osx && $CC = clang) || ($TRAVIS_OS_NAME = linux && $CC = gcc-4.8)) ]]; then curl -T $CIAODIR/build/pbundle/ciao-latest.tar.gz -ujfmc:$BINTRAY_KEY 'https://api.bintray.com/content/ciao-lang/builds/ciao-latest.tar.gz;bt_package=ciao;bt_version=latest;publish=1;override=1'; fi
+- if [[ (($TRAVIS_OS_NAME = osx && $CC = clang) || ($TRAVIS_OS_NAME = linux && $CC = gcc-4.8)) ]]; then curl -T $CIAODIR/build/pbundle/ciao-latest-*.tar.gz -ujfmc:$BINTRAY_KEY 'https://api.bintray.com/content/ciao-lang/builds/ciao-latest.tar.gz;bt_package=ciao;bt_version=latest;publish=1;override=1'; fi
 branches:
   only:
   - master
