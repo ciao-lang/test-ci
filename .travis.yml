@@ -30,15 +30,7 @@ script:
 - true # ./hw
 - mkdir $CIAODIR/build/pbundle; cp hw.pl $CIAODIR/build/pbundle/ciao-latest.tar.gz
 after_success:
-- if [ $TRAVIS_BRANCH == $TRAVIS_TAG ]; then echo "missing deploy"; fi
-deploy:
-  provider: bintray
-  file: bintray-descriptor.json
-  user: jfmc
-  key:
-    secure: caotJ7W50JaAbfySP7CdWrrq/b2x8OzcHhG0u8My6I3wWf0t+jKLP0OvuVp/WJUWYd9+aviE24ln4HFA1Pj6+GIrModBy0AlyOsGpsEqPCKB9pYYOBO+Xefm1Xhs+iAzr1zP7UnFp/z4txvn+22cq/Sr6ZTKUk1E71oZWdqGi+cGefbSOZ9y+kX7OyoTxmsDGA9oXJnSxZMStChdIb40n4tZLWiheTjfGWdM4xYdIbUmR9J1ZTsF8HDoXS3ltbxjXOG7MkPeld8tOjjr24Gc6ECjBVnJ0RV19qxDNxWuFYOpKLog7bWCXQzm+2WahYhzMjmNmwVXFkSkCRomlVe9IGZG03H/hTf4NcakzuvWIjhtqeNPSBWtOI05lLDTgKuh5bvXhlzUfEFLIyY8Dwt59dHSaXkpuHOb6LBWnPXPQ1DYSCwUOrtMr4o7LaimAAbvOBpZ1K0O/5Rn/Y5c1dKOgNxKtmkS2hqubGQuT9r1sT4UGRJAjH6I+trJq6OeMA0YTta5SAC2FW2XW1nWSjaWBNiMGxpr/2B4WMvVJaWUGi4OLzhfkR7XJz6wQte/JqRUnsiXOwxQa7/Iji5WqGn1pIrVulJKyPZJGqvaiJi1n3N8mBsLMXWqFTiFz8/JUl7uSbh2vFeDVELNAn+dB0LxoyAG1nH3ZJEzcb+lJO3BWiQ=
-  on:
-    condition: (($TRAVIS_OS_NAME = osx && $CC = clang) || ($TRAVIS_OS_NAME = linux && $CC = gcc-4.8))
+- if [[ (($TRAVIS_OS_NAME = osx && $CC = clang) || ($TRAVIS_OS_NAME = linux && $CC = gcc-4.8)) ]]; then curl -T $CIAODIR/build/pbundle/ciao-latest.tar.gz -ujfmc:$BINTRAY_KEY 'https://api.bintray.com/content/ciao-lang/builds/ciao-latest.tar.gz;bt_package=ciao;bt_version=latest;publish=1;override=1'; fi
 branches:
   only:
   - master
@@ -46,7 +38,9 @@ notifications:
   email: false
 env:
 - LANG="en_US.UTF-8" ARCHOPTS=
+  secure: "fBCz5xOju/iWyqZAPs1pEYl/Z1SSoUlqr1v0Nw/0K6AHS99AciIe6/l7iUUuufhhIFebxK5fGAlsWZB3c/JPcDaK1E8ANVEVHWUkddof36//m1Z+ZJohGMd3eJNdYM/F5bmrxPQg+eyBCzMrcxG8vOEVY/OaOOErpnOfk6hoMemocqi21SaPKS9139Q+0R7/d/fjm9Qj4a7lPhQC36PLZMOHx+NvOlWi0C2hd0eGSoMJkvlnufTnQ9+5n+YdBkaF3V17PtiFRsntjC1/d8MM/NNo//kniUbKEnuNrWIxpF8gqCYtIpYuuB/9VfidtFSu9K9iDU0R3iXFmXEAK740ynvZfZABjKi1mQCjxm/KYOhOUi9qKuCu6awZOZi8p+wYjKezfIMuNNe5Mn7AK+OU7tpLhg6Hm0R2hiKlEPRYS2We6V4mggsGO9LZDMvTop933IiSduyHW8W/t8wrEV1rEs8kcOjc2dfqNlmhAIWlRlFLlA9O82CULTJrEgoVdI7dx27y5r3//Bdx5N1ywwT6/j9HskuB/802K6di3ypS+D7fZvnw1m6m7zW4UmCgEpWLAucpOtOkamlMcMhq3LEB9ACEaJSWuGS8TnzjMMR3Qb4ge8ZrrofNObjmTm9GQHPG0+jHGc6lkRM2KrXxQaVGcY14xRBDHtWxcpqn7fCo6Es="
 - LANG="en_US.UTF-8" ARCHOPTS="--core:m32=yes"
+  secure: "fBCz5xOju/iWyqZAPs1pEYl/Z1SSoUlqr1v0Nw/0K6AHS99AciIe6/l7iUUuufhhIFebxK5fGAlsWZB3c/JPcDaK1E8ANVEVHWUkddof36//m1Z+ZJohGMd3eJNdYM/F5bmrxPQg+eyBCzMrcxG8vOEVY/OaOOErpnOfk6hoMemocqi21SaPKS9139Q+0R7/d/fjm9Qj4a7lPhQC36PLZMOHx+NvOlWi0C2hd0eGSoMJkvlnufTnQ9+5n+YdBkaF3V17PtiFRsntjC1/d8MM/NNo//kniUbKEnuNrWIxpF8gqCYtIpYuuB/9VfidtFSu9K9iDU0R3iXFmXEAK740ynvZfZABjKi1mQCjxm/KYOhOUi9qKuCu6awZOZi8p+wYjKezfIMuNNe5Mn7AK+OU7tpLhg6Hm0R2hiKlEPRYS2We6V4mggsGO9LZDMvTop933IiSduyHW8W/t8wrEV1rEs8kcOjc2dfqNlmhAIWlRlFLlA9O82CULTJrEgoVdI7dx27y5r3//Bdx5N1ywwT6/j9HskuB/802K6di3ypS+D7fZvnw1m6m7zW4UmCgEpWLAucpOtOkamlMcMhq3LEB9ACEaJSWuGS8TnzjMMR3Qb4ge8ZrrofNObjmTm9GQHPG0+jHGc6lkRM2KrXxQaVGcY14xRBDHtWxcpqn7fCo6Es="
 os:
 - linux
 - osx
