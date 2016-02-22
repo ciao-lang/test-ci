@@ -5,7 +5,7 @@
 
   "package": {
     "name": "ciao", // Bintray package name
-    "repo": "ciao", // Bintray repository name
+    "repo": "generic", // Bintray repository name
     "subject": "ciao-lang", // Bintray subject (user or organization)
     "desc": "Ciao binary distribution",
     "website_url": "ciao-lang.org",

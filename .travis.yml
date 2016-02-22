@@ -38,7 +38,7 @@ deploy:
   key:
     secure: caotJ7W50JaAbfySP7CdWrrq/b2x8OzcHhG0u8My6I3wWf0t+jKLP0OvuVp/WJUWYd9+aviE24ln4HFA1Pj6+GIrModBy0AlyOsGpsEqPCKB9pYYOBO+Xefm1Xhs+iAzr1zP7UnFp/z4txvn+22cq/Sr6ZTKUk1E71oZWdqGi+cGefbSOZ9y+kX7OyoTxmsDGA9oXJnSxZMStChdIb40n4tZLWiheTjfGWdM4xYdIbUmR9J1ZTsF8HDoXS3ltbxjXOG7MkPeld8tOjjr24Gc6ECjBVnJ0RV19qxDNxWuFYOpKLog7bWCXQzm+2WahYhzMjmNmwVXFkSkCRomlVe9IGZG03H/hTf4NcakzuvWIjhtqeNPSBWtOI05lLDTgKuh5bvXhlzUfEFLIyY8Dwt59dHSaXkpuHOb6LBWnPXPQ1DYSCwUOrtMr4o7LaimAAbvOBpZ1K0O/5Rn/Y5c1dKOgNxKtmkS2hqubGQuT9r1sT4UGRJAjH6I+trJq6OeMA0YTta5SAC2FW2XW1nWSjaWBNiMGxpr/2B4WMvVJaWUGi4OLzhfkR7XJz6wQte/JqRUnsiXOwxQa7/Iji5WqGn1pIrVulJKyPZJGqvaiJi1n3N8mBsLMXWqFTiFz8/JUl7uSbh2vFeDVELNAn+dB0LxoyAG1nH3ZJEzcb+lJO3BWiQ=
   on:
-    condition: ( $TRAVIS_OS_NAME = osx && $CC = clang ) || ( $TRAVIS_OS_NAME = linux && $CC = gcc )
+    condition: \( $TRAVIS_OS_NAME == osx -a $CC == clang \) -o \( $TRAVIS_OS_NAME == linux -a $CC = gcc \)
 branches:
   only:
   - master
