@@ -2,8 +2,8 @@ platform:
   - x64
 environment:
   global:
-    - BINTRAY_KEY:
-        secure: 8A062RqqrETT0aWTiznQdrFMz95U6Nq/mP5hCSNXMRGT3p1ZmyW7Q+kxv3fX/sTL
+    BINTRAY_KEY:
+      secure: 8A062RqqrETT0aWTiznQdrFMz95U6Nq/mP5hCSNXMRGT3p1ZmyW7Q+kxv3fX/sTL
   # Using preinstalled MSYS2 on AppVeyor
   matrix:
 #    - compiler: msbuild
