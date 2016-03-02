@@ -8,7 +8,10 @@ Ciao build and tests based on public CI services.
 
 Keys are encrypted using:
 
- - Travis-CI: `travis encrypt BINTRAY_KEY=<YOUR_BINTRAY_KEY>`. The
-   output is added to `env.global` at the `.travis.yml` file.
+ - Travis-CI: Install
+   [Travis CI CLI](https://github.com/travis-ci/travis.rb) and use
+   ``travis encrypt BINTRAY_KEY=<YOUR_BINTRAY_KEY>`. The output is
+   added to `env.global` at the `.travis.yml` file.
 
- - AppVeyor: https://ci.appveyor.com/tools/encrypt (pass `<YOUR_BINTRAY_KEY>`)
+ - AppVeyor: https://ci.appveyor.com/tools/encrypt (pass
+   `<YOUR_BINTRAY_KEY>`)
