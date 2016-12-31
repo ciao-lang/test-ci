@@ -30,7 +30,7 @@ before_script:
 script:
   - cd $CIAOROOT; ./ciao-boot.sh build
   - cd $CIAOROOT; ./ciao-boot.sh install
-  - cd $CIAOROOT; ./ciao-boot.sh gen_pbundle__bin_tgz
+  - cd $CIAOROOT; ./ciao-boot.sh gen_pbundle --kind=bin_tgz
   - cd $CIAOROOT/build/pbundle
   - VERS=`cat $CIAOROOT/core/Manifest/GlobalVersion`.`cat $CIAOROOT/core/Manifest/GlobalPatch`
   - PBUNDLE=`echo Ciao-*.tar.gz | sed 's/Ciao-.*-bin/ciao-'$VERS'/'`; mv Ciao-*.tar.gz $PBUNDLE
