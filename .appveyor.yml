@@ -26,5 +26,5 @@ environment:
       CIAO_OPTS: --core:m32=yes
 build_script:
   - git clone -q --branch=master https://github.com/ciao-lang/ciao.git
-  - C:\%MSYS2_DIR%\usr\bin\bash -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; cd ciao; ./ciao-boot.sh local-install $CIAO_OPTS"
-  - C:\%MSYS2_DIR%\usr\bin\bash -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; cd ciao; ./ciao-boot.sh gen_pbundle --kind=bin_tgz; cd build/pbundle; VERS=`cat $CIAOROOT/core/Manifest/GlobalVersion`.`cat $CIAOROOT/core/Manifest/GlobalPatch`; PBUNDLE=`echo Ciao-*.tar.gz | sed 's/Ciao-.*-bin/ciao-'$VERS'/'`; mv Ciao-*.tar.gz $PBUNDLE; curl -T $PBUNDLE -ujfmc:$BINTRAY_KEY 'https://api.bintray.com/content/ciao-lang/builds/'$PBUNDLE';bt_package=ciao;bt_version='$VERS';publish=1;override=1'"
+  - C:\%MSYS2_DIR%\usr\bin\bash -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; CIAOROOT=$APPVEYOR_BUILD_FOLDER/ciao; cd $CIAOROOT; ./ciao-boot.sh local-install $CIAO_OPTS"
+  - C:\%MSYS2_DIR%\usr\bin\bash -lc "cd $APPVEYOR_BUILD_FOLDER; exec 0</dev/null; CIAOROOT=$APPVEYOR_BUILD_FOLDER/ciao; cd $CIAOROOT; ./ciao-boot.sh gen_pbundle --kind=bin_tgz; cd $CIAOROOT/build/pbundle; VERS=`cat $CIAOROOT/core/Manifest/GlobalVersion`.`cat $CIAOROOT/core/Manifest/GlobalPatch`; PBUNDLE=`echo Ciao-*.tar.gz | sed 's/Ciao-.*-bin/ciao-'$VERS'/'`; mv Ciao-*.tar.gz $PBUNDLE; curl -T $PBUNDLE -ujfmc:$BINTRAY_KEY 'https://api.bintray.com/content/ciao-lang/builds/'$PBUNDLE';bt_package=ciao;bt_version='$VERS';publish=1;override=1'"
