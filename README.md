@@ -1,12 +1,18 @@
 [![Build Status](https://travis-ci.org/ciao-lang/test-ci.svg?branch=master)](https://travis-ci.org/ciao-lang/test-ci)
 [![Build Status](https://ci.appveyor.com/api/projects/status/nmgot3y6p57qgdvf?svg=true)](https://ci.appveyor.com/project/jfmc/test-ci)
 
-# test-ci
-Ciao build and tests based on public CI services.
+Repository that builds and generates distributions for:
+ - [Ciao](https://github.com/ciao-lang/ciao) (master branch)
+ - Linux, Mac, Windows
+ - i686, x86_64
 
-## Keys for deployment to BinTray
+It uses resources provided by public CI and CD services (see
+`.appveyor.yml` and `.travis.yml`). Files are deployed
+[here](https://bintray.com/ciao-lang/builds/ciao#files).
 
-Keys are encrypted using:
+## Keys for deployment
+
+Keys for BinTray are encrypted using:
 
  - Travis-CI: Install
    [Travis CI CLI](https://github.com/travis-ci/travis.rb) and use
