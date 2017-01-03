@@ -7,17 +7,17 @@ Repository that builds and generates distributions for:
  - i686, x86_64
 
 It uses resources provided by public CI and CD services (see
-`.appveyor.yml` and `.travis.yml`). Files are deployed
+`.appveyor.yml` and `.travis.yml`). Files are uploaded
 [here](https://bintray.com/ciao-lang/builds/ciao#files).
 
-## Keys for deployment
+## Keys for uploading
 
-Keys for BinTray are encrypted using:
+Keys for uploading to BinTray are encrypted using:
 
  - Travis-CI: Install
    [Travis CI CLI](https://github.com/travis-ci/travis.rb) and use
-   ``travis encrypt BINTRAY_KEY=<YOUR_BINTRAY_KEY>`. The output is
+   `travis encrypt BINTRAY_KEY=<YOUR_BINTRAY_KEY>`. The output is
    added to `env.global` at the `.travis.yml` file.
 
- - AppVeyor: https://ci.appveyor.com/tools/encrypt (pass
+ - AppVeyor: use https://ci.appveyor.com/tools/encrypt (pass
    `<YOUR_BINTRAY_KEY>`)
