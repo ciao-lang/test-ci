@@ -30,13 +30,9 @@ before_script:
 script:
   - cd $CIAOROOT; ./ciao-boot.sh build
   - cd $CIAOROOT; ./ciao-boot.sh install
-  - cd $CIAOROOT; ./ciao-boot.sh gen_pbundle --kind=bin_tgz
-  - cd $CIAOROOT/build/pbundle
-  - VERS=`cat $CIAOROOT/core/Manifest/GlobalVersion`.`cat $CIAOROOT/core/Manifest/GlobalPatch`
-  - PBUNDLE=`echo Ciao-*.tar.gz | sed 's/Ciao-.*-bin/ciao-'$VERS'/'`; mv Ciao-*.tar.gz $PBUNDLE
 
 after_success:
-  - if [[ (($TRAVIS_OS_NAME = osx && $CC = clang) || ($TRAVIS_OS_NAME = linux && $CC = gcc-4.9)) ]]; then curl -T $CIAOROOT/build/pbundle/$PBUNDLE -ujfmc:$BINTRAY_KEY 'https://api.bintray.com/content/ciao-lang/builds/'$PBUNDLE';bt_package=ciao;bt_version='$VERS';publish=1;override=1'; fi
+  - if [[ (($TRAVIS_OS_NAME = osx && $CC = clang) || ($TRAVIS_OS_NAME = linux && $CC = gcc-4.9)) ]]; then CIAOROOT=$CIAOROOT $CIAOROOT/builder/dist/deploy-bintray.sh -ujfmc:$BINTRAY_KEY; fi
 
 branches:
   only:
