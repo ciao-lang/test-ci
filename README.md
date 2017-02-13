@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/ciao-lang/ciao.CD.svg?branch=master)](https://travis-ci.org/ciao-lang/ciao.CD)
-[![Build Status]([![Build status](https://ci.appveyor.com/api/projects/status/3i19dlbss9w9ectu?svg=true)](https://ci.appveyor.com/project/jfmc/ciao-cd)
+[![Build Status](https://ci.appveyor.com/api/projects/status/3i19dlbss9w9ectu?svg=true)](https://ci.appveyor.com/project/jfmc/ciao-cd)
 
 Metadata for continuous deployment of
 [Ciao](https://github.com/ciao-lang/ciao) (master branch)
