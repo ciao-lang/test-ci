@@ -47,7 +47,7 @@ before_install:
   - # if [ $CC == clang ] && [ $TRAVIS_OS_NAME == osx ]; then brew install llvm; fi # && brew link --force llvm39
   - if [ $TRAVIS_OS_NAME == osx ] && [ $CC == gcc ]; then brew install gcc; brew link gcc; fi # && brew link --force llvm39
   - if [ $TRAVIS_OS_NAME == osx ] && [ $CC == gcc ]; then export CC=gcc-8; export CXX=g++-8; fi # otherwise gcc points to clang
-  - CIAOROOT=$TRAVIS_BUILD_DIR
+  - CIAOROOT=$TRAVIS_BUILD_DIR/ciao; git clone --depth=1 -q --branch=master https://github.com/ciao-lang/ciao.git
 
 before_script:
   - cd $CIAOROOT; ./ciao-boot.sh boot-build $ARCHOPTS --core:custom_cc=$CC
