@@ -1,38 +1,30 @@
 language: cpp
 
-compiler:
-  - gcc
-  - clang
+env:
+  global:
+    - secure: "fBCz5xOju/iWyqZAPs1pEYl/Z1SSoUlqr1v0Nw/0K6AHS99AciIe6/l7iUUuufhhIFebxK5fGAlsWZB3c/JPcDaK1E8ANVEVHWUkddof36//m1Z+ZJohGMd3eJNdYM/F5bmrxPQg+eyBCzMrcxG8vOEVY/OaOOErpnOfk6hoMemocqi21SaPKS9139Q+0R7/d/fjm9Qj4a7lPhQC36PLZMOHx+NvOlWi0C2hd0eGSoMJkvlnufTnQ9+5n+YdBkaF3V17PtiFRsntjC1/d8MM/NNo//kniUbKEnuNrWIxpF8gqCYtIpYuuB/9VfidtFSu9K9iDU0R3iXFmXEAK740ynvZfZABjKi1mQCjxm/KYOhOUi9qKuCu6awZOZi8p+wYjKezfIMuNNe5Mn7AK+OU7tpLhg6Hm0R2hiKlEPRYS2We6V4mggsGO9LZDMvTop933IiSduyHW8W/t8wrEV1rEs8kcOjc2dfqNlmhAIWlRlFLlA9O82CULTJrEgoVdI7dx27y5r3//Bdx5N1ywwT6/j9HskuB/802K6di3ypS+D7fZvnw1m6m7zW4UmCgEpWLAucpOtOkamlMcMhq3LEB9ACEaJSWuGS8TnzjMMR3Qb4ge8ZrrofNObjmTm9GQHPG0+jHGc6lkRM2KrXxQaVGcY14xRBDHtWxcpqn7fCo6Es="
+    - LANG="en_US.UTF-8"
 
-before_install:
-  - echo $LANG
-  - echo $LC_ALL
-  - if [ $TRAVIS_OS_NAME == osx ]; then brew update; fi
-  - if [ $TRAVIS_OS_NAME == linux ]; then sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
-  - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get update; fi
-  - if [ $CC == clang ] && [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install -y llvm-3.4 llvm-3.4-dev; fi
-  - if [ $CC == gcc ] && [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install -y gcc-4.9 g++-4.9; fi
-  - if [ $CC == clang ] && [ $TRAVIS_OS_NAME == osx ]; then brew install llvm; fi # && brew link --force llvm39
-  - if [ $TRAVIS_OS_NAME == osx ]; then brew install gnu-tar; fi
-  - if [ $TRAVIS_OS_NAME == linux ] && [ $CC = gcc ]; then export CC=gcc-4.9; export CXX=g++-4.9; fi # otherwise gcc points to old gcc
-  - if [ $TRAVIS_OS_NAME == osx ] && [ $CC = gcc ]; then export CC=gcc-4.9; export CXX=g++-4.9; fi # otherwise gcc points to clang
-  - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install build-essential gcc-4.9-multilib libc6-i386 libc6-dev-i386 g++-4.9-multilib; fi
-  - if [ $DEVENV == yes ] && [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install emacs; fi
-  - if [ $DEVENV == yes ] && [ $TRAVIS_OS_NAME == osx ]; then echo "using default emacs"; fi # brew tap railwaycat/emacsmacport; brew install emacs-mac
-  - if [ $DEVENV == yes ] && [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install texlive texinfo imagemagick; fi
-  - if [ $DEVENV == yes ] && [ $TRAVIS_OS_NAME == osx ]; then brew install imagemagick; fi
-  - EXTRAOPTS=""; if [ $DEVENV == yes ] && [ $TRAVIS_OS_NAME == osx ]; then EXTRAOPTS="--with-docs=no"; fi
-  - CIAOROOT=$TRAVIS_BUILD_DIR/ciao; git clone --depth=1 -q --branch=master https://github.com/ciao-lang/ciao.git
-
-before_script:
-  - cd $CIAOROOT; ./ciao-boot.sh configure --instype=local $ARCHOPTS --core:custom_cc=$CC $EXTRAOPTS
-
-script:
-  - cd $CIAOROOT; ./ciao-boot.sh build
-  - cd $CIAOROOT; ./ciao-boot.sh install
-
-after_success:
-  - if [[ (($TRAVIS_OS_NAME = osx && $CC = clang) || ($TRAVIS_OS_NAME = linux && $CC = gcc-4.9)) ]]; then CIAOROOT=$CIAOROOT $CIAOROOT/builder/dist/deploy-bintray.sh -ujfmc:$BINTRAY_KEY; fi
+matrix:
+  include:
+    - os: linux
+      compiler: gcc
+      env:
+        - ARCHOPTS=
+    - os: linux
+      compiler: gcc
+      env:
+        - ARCHOPTS="--core:m32=yes"
+    - os: osx
+      compiler: clang
+      osx_image: xcode10.1
+      env:
+        - ARCHOPTS=
+    - os: osx
+      compiler: clang
+      osx_image: xcode10.1
+      env:
+        - ARCHOPTS="--core:m32=yes"
 
 branches:
   only:
@@ -41,12 +33,29 @@ branches:
 notifications:
   email: false
 
-env:
-  global:
-  - secure: "fBCz5xOju/iWyqZAPs1pEYl/Z1SSoUlqr1v0Nw/0K6AHS99AciIe6/l7iUUuufhhIFebxK5fGAlsWZB3c/JPcDaK1E8ANVEVHWUkddof36//m1Z+ZJohGMd3eJNdYM/F5bmrxPQg+eyBCzMrcxG8vOEVY/OaOOErpnOfk6hoMemocqi21SaPKS9139Q+0R7/d/fjm9Qj4a7lPhQC36PLZMOHx+NvOlWi0C2hd0eGSoMJkvlnufTnQ9+5n+YdBkaF3V17PtiFRsntjC1/d8MM/NNo//kniUbKEnuNrWIxpF8gqCYtIpYuuB/9VfidtFSu9K9iDU0R3iXFmXEAK740ynvZfZABjKi1mQCjxm/KYOhOUi9qKuCu6awZOZi8p+wYjKezfIMuNNe5Mn7AK+OU7tpLhg6Hm0R2hiKlEPRYS2We6V4mggsGO9LZDMvTop933IiSduyHW8W/t8wrEV1rEs8kcOjc2dfqNlmhAIWlRlFLlA9O82CULTJrEgoVdI7dx27y5r3//Bdx5N1ywwT6/j9HskuB/802K6di3ypS+D7fZvnw1m6m7zW4UmCgEpWLAucpOtOkamlMcMhq3LEB9ACEaJSWuGS8TnzjMMR3Qb4ge8ZrrofNObjmTm9GQHPG0+jHGc6lkRM2KrXxQaVGcY14xRBDHtWxcpqn7fCo6Es="
-  matrix:
-  - LANG="en_US.UTF-8" ARCHOPTS= DEVENV=no
-  - LANG="en_US.UTF-8" ARCHOPTS="--core:m32=yes" DEVENV=no
-os:
-  - linux
-  - osx
+before_install:
+  - echo $LANG
+  - echo $LC_ALL
+  - if [ $TRAVIS_OS_NAME == osx ]; then brew update; fi
+  - if [ $TRAVIS_OS_NAME == linux ]; then sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
+  - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get update; fi
+  - if [ $TRAVIS_OS_NAME == linux ]; then sudo apt-get install libc6-i386 libc6-dev-i386; fi
+  - if [ $TRAVIS_OS_NAME == linux ] && [ $CC == clang ]; then sudo apt-get install -y clang-3.9 clang-3.9-dev; fi
+  - if [ $TRAVIS_OS_NAME == linux ] && [ $CC == gcc ]; then sudo apt-get install -y build-essential gcc-8 g++-8; fi
+  - if [ $TRAVIS_OS_NAME == linux ] && [ $CC == gcc ]; then sudo apt-get install gcc-8-multilib libc6-i386 libc6-dev-i386 g++-8-multilib; fi
+  - if [ $TRAVIS_OS_NAME == linux ] && [ $CC == gcc ]; then export CC=gcc-8; export CXX=g++-8; fi # otherwise gcc points to old gcc
+  - # if [ $CC == clang ] && [ $TRAVIS_OS_NAME == osx ]; then brew install llvm; fi # && brew link --force llvm39
+  - if [ $TRAVIS_OS_NAME == osx ] && [ $CC == gcc ]; then brew install gcc; brew link gcc; fi # && brew link --force llvm39
+  - if [ $TRAVIS_OS_NAME == osx ] && [ $CC == gcc ]; then export CC=gcc-8; export CXX=g++-8; fi # otherwise gcc points to clang
+  - CIAOROOT=$TRAVIS_BUILD_DIR
+
+before_script:
+  - cd $CIAOROOT; ./ciao-boot.sh boot-build $ARCHOPTS --core:custom_cc=$CC
+  - cd $CIAOROOT; ./ciao-boot.sh configure --instype=local $ARCHOPTS --core:custom_cc=$CC $EXTRAOPTS
+
+script:
+  - cd $CIAOROOT; ./ciao-boot.sh build
+  - cd $CIAOROOT; ./ciao-boot.sh install
+
+after_success:
+  - CIAOROOT=$CIAOROOT $CIAOROOT/builder/dist/deploy-bintray.sh -ujfmc:$BINTRAY_KEY
