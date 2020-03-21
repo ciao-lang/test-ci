@@ -5,6 +5,6 @@ Metadata for continuous deployment of
 [Ciao](https://github.com/ciao-lang/ciao) (master branch)
 
  - Builder: Travis-CI (`.travis.yml`), AppVeyor (`.appveyor.yml`)
- - OS: Linux, Mac, Windows
+ - OS: Linux, macOS, Windows
  - Arch: i686, x86_64
  - [Output](https://bintray.com/ciao-lang/builds/ciao#files).

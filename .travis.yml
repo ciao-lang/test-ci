@@ -20,11 +20,6 @@ matrix:
       osx_image: xcode10.1
       env:
         - ARCHOPTS=
-    - os: osx
-      compiler: clang
-      osx_image: xcode10.1
-      env:
-        - ARCHOPTS="--core:m32=yes"
 
 branches:
   only:
